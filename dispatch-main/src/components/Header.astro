@@ -1,0 +1,70 @@
+---
+import MobileNav from './MobileNav.astro';
+---
+
+<!--
+  TODO: create nav animation
+-->
+<header
+  class="absolute h-14 w-screen px-5 flex place-content-between text-black items-center z-10"
+>
+  <div class="logo">
+    <a class="px-4" href="/">
+      <span>Dispatch</span>
+    </a>
+  </div>
+  <nav>
+    <MobileNav />
+    <ul class="hidden xl:flex place-content-between">
+      <li>
+        <a
+          class="py-1 px-2 hover:bg-black/5 hover:p-2 backdrop-blur-lg outline-offset-2 scroll-smooth ease-in-out rounded transition-all duration-500"
+          href="/#services"
+        >
+          <span class="mx-2">Services</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="py-1 px-2 hover:bg-black/5 hover:p-2 backdrop-blur-lg outline-offset-2 scroll-smooth ease-in-out rounded transition-all duration-500"
+          href="/#about"
+        >
+          <span class="mx-2">About Us</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="py-1 px-2 hover:bg-black/5 hover:p-2 backdrop-blur-lg outline-offset-2 scroll-smooth ease-in-out rounded transition-all duration-500"
+          href="/#faq"
+        >
+          <span class="mx-2">FAQ</span>
+        </a>
+      </li>
+      <li>
+        <a
+          class="py-1 px-2 hover:bg-black/5 hover:p-2 backdrop-blur-lg outline-offset-2 scroll-smooth ease-in-out rounded transition-all duration-500"
+          href="/#signup"
+        >
+          <span class="mx-2">Sign Up</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  // Get the current URL
+  const currentURL = window.location.href;
+
+  // Check if the URL contains specific keywords or patterns
+  const isPrivacyAndLegal = currentURL.includes('legal');
+
+  // Get the header element
+  const header = document.getElementsByTagName('header')[0]; // Note the [0] to get the first matching element
+
+  // Apply the appropriate text color based on the URL condition
+  if (isPrivacyAndLegal) {
+    header.classList.remove('text-black');
+    header.classList.add('text-white');
+  }
+</script>
