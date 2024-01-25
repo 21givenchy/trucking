@@ -1,5 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useForm } from 'react-hook-form';
+import 'leaflet/dist/leaflet.css';
+
+let MapContainer, TileLayer, Marker, Popup;
+
+if (typeof window !== 'undefined') {
+  const L = require('react-leaflet');
+  MapContainer = L.MapContainer;
+  TileLayer = L.TileLayer;
+  Marker = L.Marker;
+  Popup = L.Popup;
+} else {
+  MapContainer = TileLayer = Marker = Popup = () => null;
+}
 
 function Form() {
   const {
@@ -10,7 +23,7 @@ function Form() {
 
   const onSubmit = (data) => console.log(data);
   console.log(errors);
-
+  
   const [truckLocation, setTruckLocation] = useState([]);
   
   useEffect(() => {
@@ -26,15 +39,26 @@ function Form() {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-5 mx-auto w-full max-w-md"
     >
-      <input
-        className="border-[1px] rounded-lg border-[#27272a] bg-transparent py-2 px-3 text-sm"
-        type="text"
-        placeholder="First name"
-        {...register('First name', { required: true, maxLength: 80 })}
-      />
+      
       <div>
-        Truck Location: {truckLocation ? `${truckLocation[0]}, ${truckLocation[1]}` : 'Loading...'}
-      </div>
+      Truck Location: {truckLocation ? `${truckLocation[0]}, ${truckLocation[1]}` : 'Loading...'}
+    </div>
+
+    {truckLocation && (
+      <Suspense fallback={<div>Loading...</div>}>
+        <MapContainer center={truckLocation} zoom={13} style={{ height: "300px", width: "100%" }}>
+          <TileLayer
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          />
+          <Marker position={truckLocation}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        </MapContainer>
+      </Suspense>
+    )}
       
       <input type="submit" />
     </form>
